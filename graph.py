@@ -2,10 +2,16 @@ import math
 import pyxel
 import random
 
-graph = {}
-
 WIDTH = 256
 HEIGTH = 196
+
+# def dfs(node):
+#     if node not in visited:
+#         print(node)
+#         visited.append(node)
+#         for neighbour in graph[node]:
+#             if neighbour not in visited:
+#                 dfs(neighbour)
 
 def generate_graph(n: int):
     lst = []
@@ -25,26 +31,18 @@ def generate_graph(n: int):
 
     return graph
 
-graph = generate_graph(random.randrange(6, 7))
+graph = {}
+graph = generate_graph(random.randrange(7, 10))
 
 visited = []
-
-def dfs(node):
-    if node not in visited:
-        print(node)
-        visited.append(node)
-        for neighbour in graph[node]:
-            if neighbour not in visited:
-                dfs(neighbour)
-
-
-current_node = '-1'
 stack_dfs = []
+current_node = '-1'
 mistake = 0
 
 def user_dfs(node):
-    global current_node
     global stack_dfs
+    global visited
+    global current_node
     global mistake
     
     if node in visited:
@@ -75,6 +73,7 @@ def user_dfs(node):
                         stack_dfs.append(node)
                         flag = 2
                         break
+
                 if flag == 2:
                     return 0
                 if flag == 1:
@@ -90,12 +89,10 @@ def user_dfs(node):
                  
 class Node:
     def __init__(self, key, x, y, col):
-        # self.neighbours = lst
+        self.key = key
         self.posx = x
         self.posy = y
-        self.key = key
         self.color = col
-
 
     def update(self):
         mouse_pos = [pyxel.mouse_x, pyxel.mouse_y]
@@ -106,10 +103,74 @@ class Node:
             aux = user_dfs(self.key)
             if aux == 0:
                 self.color = ((self.color-5)%2)+6
+                return 1
+
+        return 0
         
     def draw(self):
         pyxel.circ(self.posx, self.posy, 5, self.color)
         pyxel.text(self.posx, self.posy, self.key, 8)
+
+class Tree_node(Node):
+    def __init__(self, key, x, y, col, layer, parent: Node = None):
+        super().__init__(key, x, y, col)
+        self.key = key
+        self.posx = x
+        self.posy = y
+        self.color = col
+        self.layer = layer
+        self.parent = parent
+
+
+    def draw(self, id):
+
+        if id == 0:
+            if self.parent != None:
+                pyxel.line(self.posx, self.posy, self.parent.posx, self.parent.posy, 10)
+
+        elif id == 1:
+            pyxel.circ(self.posx, self.posy, 5, self.color)
+            pyxel.text(self.posx, self.posy, self.key, 8)
+
+class Tree:
+    def __init__(self):
+        self.tree_nodes = []
+        self.layers = []
+        self.center = (WIDTH/4)*3
+
+    def add_node(self, layer):
+        offset = 20
+        it = 0
+        
+        if self.layers.__len__() <= layer :
+            self.layers.append(0)
+
+        for node in self.tree_nodes:
+            if node.layer == layer:
+                newx = self.center - offset*self.layers[layer]/2 + it*offset
+                node.posx = newx
+                it += 1
+        
+        newy = 20+offset*layer
+        newx = self.center - offset*self.layers[layer]/2 + it*offset
+
+        if layer == 0:
+            self.tree_nodes.append(Tree_node(stack_dfs[-1], newx, newy, 13, layer, None))
+        else:
+            for node in self.tree_nodes:
+                if node.key == stack_dfs[layer-1]:
+                    parent = node
+
+            self.tree_nodes.append(Tree_node(stack_dfs[-1], newx, newy, 13, layer, parent))
+
+        self.layers[layer] += 1
+        
+    def draw(self):
+        for node in self.tree_nodes:
+            node.draw(0)
+
+        for node in self.tree_nodes:
+            node.draw(1)
 
 class App:
     def __init__(self):
@@ -117,10 +178,11 @@ class App:
         pyxel.mouse(True)
         
         self.nodes = []
+        self.tree = Tree()
         num_nodes = graph.__len__()
         for i in range(0, num_nodes):
-            x = pyxel.width/2+math.sin(math.radians((360/num_nodes)*i))*80
-            y = pyxel.height/2+math.cos(math.radians((360/num_nodes)*i))*50
+            x = pyxel.width/4+math.sin(math.radians((360/num_nodes)*i))*40
+            y = pyxel.height/2+math.cos(math.radians((360/num_nodes)*i))*25
 
             self.nodes.append(Node(str(i), x, y, 7))
             
@@ -131,25 +193,23 @@ class App:
             pyxel.quit()
 
         for node in self.nodes:
-            node.update()
-
+            if node.update() == 1:
+                self.tree.add_node(stack_dfs.__len__()-1)
 
     def draw(self):
-        
         pyxel.cls(0)
-       
+        pyxel.line(WIDTH/2 , 0, WIDTH/2, HEIGTH, 5)
+        pyxel.text(3, 3, "GRAFO", 8)
+        pyxel.text(WIDTH/2+5, 3, "ARVORE", 8)
+        pyxel.text(3, HEIGTH-10, f'MISTAKES: {mistake}', 8)
         
         for node in self.nodes:
-
             for neighbours in graph[node.key]:
                 pyxel.line(node.posx, node.posy, self.nodes[int(neighbours)].posx, self.nodes[int(neighbours)].posy, 10)
-
 
         for node in self.nodes:
             node.draw()
 
-        pyxel.text(WIDTH-50, 10, f'MISTAKES: {mistake}', 8)
-
-
+        self.tree.draw()
 
 App()
