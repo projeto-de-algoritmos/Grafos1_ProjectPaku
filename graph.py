@@ -24,13 +24,56 @@ def generate_graph(n: int):
     return graph
 
 graph = {}
-graph = generate_graph(random.randrange(7, 10))
+graph = generate_graph(random.randrange(5, 6))
 
 visited = []
 stack_dfs = []
+queue_bfs = []
 current_node = '-1'
 mistake = 0
-queue = []
+
+def user_bfs(node):
+    global queue_bfs
+    global visited
+    global mistake
+
+    if node in visited:
+        return 1
+
+    if visited == []:
+        visited.append(node)
+        queue_bfs.append(graph[node].copy())
+        return 0
+    else:
+
+        clean = True
+        while clean:
+            clean = False
+            for i in queue_bfs[0]:
+                if i in visited:
+                    queue_bfs[0].remove(i)
+                    clean = True
+            if queue_bfs[0] == []:
+                queue_bfs.pop(0)
+                clean = True
+
+        ############## 
+        for i in queue_bfs[0]:
+            if i in visited:
+                print(f'{i} ja foi visitado')
+        ##############
+
+        if node in queue_bfs[0]:
+            visited.append(node)
+            queue_bfs.append(graph[node].copy())
+            queue_bfs[0].remove(node)
+            # print(f'# {queue_bfs}')
+            return 0 
+        else:
+            mistake += 1
+            # print(queue_bfs)
+            return 1
+        
 
 def user_dfs(node):
     global stack_dfs
@@ -93,7 +136,8 @@ class Node:
 
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON) and (math.dist(mouse_pos, node_pos) < 6):
             # print(f"Clicou no nózin = {self.key} 😎")
-            aux = user_dfs(self.key)
+            # aux = user_dfs(self.key)
+            aux = user_bfs(self.key)
             if aux == 0:
                 self.color = ((self.color-5)%2)+6
                 return 1
@@ -181,16 +225,17 @@ class App:
 
         for node in self.nodes:
             if node.update() == 1:
+                ...
                 # TRATA APENAS A ARVORE DFS ↓
-                key = stack_dfs[-1]
-                layer = stack_dfs.__len__() - 1
-                if layer == 0:
-                    parent = None
-                else:
-                    for node in self.tree.tree_nodes:
-                        if node.key == stack_dfs[layer-1]:
-                            parent = node
-                self.tree.add_node(key, layer, parent)
+                # key = stack_dfs[-1]
+                # layer = stack_dfs.__len__() - 1
+                # if layer == 0:
+                #     parent = None
+                # else:
+                #     for node in self.tree.tree_nodes:
+                #         if node.key == stack_dfs[layer-1]:
+                #             parent = node
+                # self.tree.add_node(key, layer, parent)
 
     def draw(self):
         pyxel.cls(0)
