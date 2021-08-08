@@ -1,18 +1,31 @@
+import random
 import math
 import pyxel
 
-graph = {
-  '0' : ['1'],
-  '1' : ['0', '2','5'],
-  '2' : ['1', '3', '5'],
-  '3' : ['2', '4'],
-  '4' : ['3', '5', '6'],
-  '5' : ['1', '4', '2'],
-  '6' : ['4']
-}
-
 WIDTH = 256
 HEIGTH = 196
+
+graph = {}
+
+def generate_graph(n: int):
+    lst = []
+    for i in range(0, n):
+        lst.append([])
+
+    for i in range(0, n):
+        num = i
+        while num == i or str(num) in lst[i]:
+            num = random.randrange(0,n)
+
+        lst[i].append(str(num))
+        lst[num].append(str(i)) 
+
+    for i in range(0, n):
+        graph.update({str(i): lst[i]})
+
+    return graph
+
+graph = generate_graph(random.randrange(4, 8))
 
 class Node:
     def __init__(self, key, x, y, col):
@@ -20,7 +33,6 @@ class Node:
         self.posy = y
         self.key = key
         self.color = col
-
 
     def update(self):
         mouse_pos = [pyxel.mouse_x, pyxel.mouse_y]
@@ -57,19 +69,12 @@ class App:
         for node in self.nodes:
             node.update()
 
-
-        
-
     def draw(self):
-        
         pyxel.cls(0)
 
-        
         for node in self.nodes:
-           
             for neighbours in graph[node.key]:
                 pyxel.line(node.posx, node.posy, self.nodes[int(neighbours)].posx, self.nodes[int(neighbours)].posy, 10)
-
 
         for node in self.nodes:
             node.draw()
