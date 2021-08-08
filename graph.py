@@ -5,14 +5,6 @@ import random
 WIDTH = 256
 HEIGTH = 196
 
-# def dfs(node):
-#     if node not in visited:
-#         print(node)
-#         visited.append(node)
-#         for neighbour in graph[node]:
-#             if neighbour not in visited:
-#                 dfs(neighbour)
-
 def generate_graph(n: int):
     lst = []
     for i in range(0, n):
@@ -38,6 +30,7 @@ visited = []
 stack_dfs = []
 current_node = '-1'
 mistake = 0
+queue = []
 
 def user_dfs(node):
     global stack_dfs
@@ -120,17 +113,18 @@ class Tree_node(Node):
         self.color = col
         self.layer = layer
         self.parent = parent
-
+        self.show = True
 
     def draw(self, id):
 
-        if id == 0:
-            if self.parent != None:
-                pyxel.line(self.posx, self.posy, self.parent.posx, self.parent.posy, 10)
+        if self.show:
+            if id == 0:
+                if self.parent != None:
+                    pyxel.line(self.posx, self.posy, self.parent.posx, self.parent.posy, 10)
 
-        elif id == 1:
-            pyxel.circ(self.posx, self.posy, 5, self.color)
-            pyxel.text(self.posx, self.posy, self.key, 8)
+            elif id == 1:
+                pyxel.circ(self.posx, self.posy, 5, self.color)
+                pyxel.text(self.posx, self.posy, self.key, 8)
 
 class Tree:
     def __init__(self):
@@ -138,7 +132,7 @@ class Tree:
         self.layers = []
         self.center = (WIDTH/4)*3
 
-    def add_node(self, layer):
+    def add_node(self, key, layer, parent):
         offset = 20
         it = 0
         
@@ -154,14 +148,7 @@ class Tree:
         newy = 20+offset*layer
         newx = self.center - offset*self.layers[layer]/2 + it*offset
 
-        if layer == 0:
-            self.tree_nodes.append(Tree_node(stack_dfs[-1], newx, newy, 13, layer, None))
-        else:
-            for node in self.tree_nodes:
-                if node.key == stack_dfs[layer-1]:
-                    parent = node
-
-            self.tree_nodes.append(Tree_node(stack_dfs[-1], newx, newy, 13, layer, parent))
+        self.tree_nodes.append(Tree_node(key, newx, newy, 13, layer, parent))
 
         self.layers[layer] += 1
         
@@ -174,7 +161,7 @@ class Tree:
 
 class App:
     def __init__(self):
-        pyxel.init(WIDTH, HEIGTH, caption="My traversal Coach")
+        pyxel.init(WIDTH, HEIGTH, caption="My Traversal Coach")
         pyxel.mouse(True)
         
         self.nodes = []
@@ -194,7 +181,16 @@ class App:
 
         for node in self.nodes:
             if node.update() == 1:
-                self.tree.add_node(stack_dfs.__len__()-1)
+                # TRATA APENAS A ARVORE DFS ↓
+                key = stack_dfs[-1]
+                layer = stack_dfs.__len__() - 1
+                if layer == 0:
+                    parent = None
+                else:
+                    for node in self.tree.tree_nodes:
+                        if node.key == stack_dfs[layer-1]:
+                            parent = node
+                self.tree.add_node(key, layer, parent)
 
     def draw(self):
         pyxel.cls(0)
