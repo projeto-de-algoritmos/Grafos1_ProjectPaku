@@ -24,7 +24,7 @@ def generate_graph(n: int):
     return graph
 
 graph = {}
-graph = generate_graph(random.randrange(5, 6))
+graph = generate_graph(random.randrange(10, 15))
 
 visited = []
 stack_dfs = []
@@ -32,20 +32,45 @@ queue_bfs = []
 current_node = '-1'
 mistake = 0
 
+
+def bfs(node):
+    queue = []
+    visited_bfs = []
+    visited_bfs.append(node)
+    queue.append(node)
+
+    while queue:
+        s = queue.pop(0) 
+        print (s) 
+
+    for neighbour in graph[s]:
+        if neighbour not in visited:
+            visited_bfs.append(neighbour)
+            queue.append(neighbour)
+            
+# CN stands for Current Node
+cn_iterator = 0
+cn_list = []
+cn_layers = []
+
 def user_bfs(node):
     global queue_bfs
     global visited
     global mistake
-
+    global cn_iterator
+    global cn_layers
+    global cn_list
+    
     if node in visited:
         return 1
 
     if visited == []:
         visited.append(node)
         queue_bfs.append(graph[node].copy())
+        cn_list.append(node)
+        cn_layers.append(cn_iterator)
         return 0
     else:
-
         clean = True
         while clean:
             clean = False
@@ -55,25 +80,21 @@ def user_bfs(node):
                     clean = True
             if queue_bfs[0] == []:
                 queue_bfs.pop(0)
+                
+                cn_iterator += 1
                 clean = True
 
-        ############## 
-        for i in queue_bfs[0]:
-            if i in visited:
-                print(f'{i} ja foi visitado')
-        ##############
-
+      
         if node in queue_bfs[0]:
             visited.append(node)
             queue_bfs.append(graph[node].copy())
             queue_bfs[0].remove(node)
-            # print(f'# {queue_bfs}')
+            cn_list.append(node)
+            cn_layers.append(cn_layers[cn_iterator]+1)
             return 0 
         else:
             mistake += 1
-            # print(queue_bfs)
             return 1
-        
 
 def user_dfs(node):
     global stack_dfs
@@ -135,7 +156,6 @@ class Node:
         node_pos = [self.posx, self.posy]
 
         if pyxel.btnp(pyxel.MOUSE_LEFT_BUTTON) and (math.dist(mouse_pos, node_pos) < 6):
-            # print(f"Clicou no nózin = {self.key} 😎")
             # aux = user_dfs(self.key)
             aux = user_bfs(self.key)
             if aux == 0:
@@ -157,18 +177,16 @@ class Tree_node(Node):
         self.color = col
         self.layer = layer
         self.parent = parent
-        self.show = True
 
     def draw(self, id):
 
-        if self.show:
-            if id == 0:
-                if self.parent != None:
-                    pyxel.line(self.posx, self.posy, self.parent.posx, self.parent.posy, 10)
+        if id == 0:
+            if self.parent != None:
+                pyxel.line(self.posx, self.posy, self.parent.posx, self.parent.posy, 10)
 
-            elif id == 1:
-                pyxel.circ(self.posx, self.posy, 5, self.color)
-                pyxel.text(self.posx, self.posy, self.key, 8)
+        elif id == 1:
+            pyxel.circ(self.posx, self.posy, 5, self.color)
+            pyxel.text(self.posx, self.posy, self.key, 8)
 
 class Tree:
     def __init__(self):
@@ -192,8 +210,8 @@ class Tree:
         newy = 20+offset*layer
         newx = self.center - offset*self.layers[layer]/2 + it*offset
 
+    
         self.tree_nodes.append(Tree_node(key, newx, newy, 13, layer, parent))
-
         self.layers[layer] += 1
         
     def draw(self):
@@ -202,7 +220,7 @@ class Tree:
 
         for node in self.tree_nodes:
             node.draw(1)
-
+ite = 0
 class App:
     def __init__(self):
         pyxel.init(WIDTH, HEIGTH, caption="My Traversal Coach")
@@ -220,12 +238,25 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
+        global ite
         if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
 
         for node in self.nodes:
             if node.update() == 1:
-                ...
+                # TRATA APENAS A ARVORE BFS
+
+                if cn_layers.__len__() == 1 :
+                    parent = None
+                    node_layer = cn_layers[cn_iterator]
+                else:
+                    node_layer = cn_layers[cn_iterator]+1
+                    for tnode in self.tree.tree_nodes:
+                        if tnode.key == cn_list[cn_iterator]:
+                            parent = tnode
+                            
+                self.tree.add_node(node.key, node_layer, parent)
+                
                 # TRATA APENAS A ARVORE DFS ↓
                 # key = stack_dfs[-1]
                 # layer = stack_dfs.__len__() - 1
