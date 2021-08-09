@@ -83,29 +83,29 @@ class App:
                 utils.state = 1
         elif utils.state == 1:
 
-            if self.done == 1:
-                if pyxel.btnp(pyxel.KEY_R):
-                    utils.state = 0
-                    utils.mistakes = 0
-                    utils.visited = []
+            # if self.done == 1:
+            if pyxel.btnp(pyxel.KEY_R):
+                utils.state = 0
+                utils.mistakes = 0
+                utils.visited = []
 
-                    self.done = 0
-                    self.timer = 0
-                   
+                self.done = 0
+                self.timer = 0
+                
 
-                    #BFS vars
-                    travel.cn_iterator = 0 # cn = current node
-                    travel.cn_list = []
-                    travel.cn_layers = []
-                    travel.queue_bfs = []
+                #BFS vars
+                travel.cn_iterator = 0 # cn = current node
+                travel.cn_list = []
+                travel.cn_layers = []
+                travel.queue_bfs = []
 
-                    # DFS vars
-                    travel.stack_dfs = []
-                    travel.current_node = '-1'
+                # DFS vars
+                travel.stack_dfs = []
+                travel.current_node = '-1'
 
 
-                    self.tree.tree_nodes = []
-                    self.tree.layers = []
+                self.tree.tree_nodes = []
+                self.tree.layers = []
 
             for node in self.nodes:
                 if node.update(self.travel) == 1:
