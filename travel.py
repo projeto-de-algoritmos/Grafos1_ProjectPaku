@@ -1,8 +1,7 @@
 import utils
 
-# CN stands for Current Node
 # BFS vars
-cn_iterator = 0
+cn_iterator = 0 # cn = current node
 cn_list = []
 cn_layers = []
 queue_bfs = []

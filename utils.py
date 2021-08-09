@@ -1,10 +1,17 @@
+import pyxel
 import random
 
 WIDTH = 256
-HEIGTH = 196
+HEIGHT = 196
+state = 0
 mistakes = 0
 visited = []
 graph = {}
+
+def x_fix(x, str):
+    n = len(str)
+    return (x - (n * pyxel.FONT_WIDTH) / 2)
+
 
 def generate_graph(n: int):
     graph = {}
