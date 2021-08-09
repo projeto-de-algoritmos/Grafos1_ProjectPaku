@@ -136,8 +136,8 @@ class App:
 
         if utils.state == 0:           
             pyxel.text(utils.x_fix(utils.WIDTH/2, "MY TRAVERSAL COACH"), utils.HEIGHT/2-70, "MY TRAVERSAL COACH", 7)
-            ap = "PRESSIONE ESPACO PARA GERAR UM GRAFO ALEATORIO"
-            ap2 = "PRESIONE <- OU -> PARA ALTERAR A QUANTIDADE DE NOS"
+            ap2 = "PRESSIONE ESPACO PARA UMA QUANTIDADE ALEATORIA DE NOS"
+            ap = "PRESIONE <- OU -> PARA ALTERAR A QUANTIDADE DE NOS"
             pyxel.text(utils.x_fix(utils.WIDTH/2, ap), utils.HEIGHT/2-30, ap, 7)
             pyxel.text(utils.x_fix(utils.WIDTH/2, ap2), utils.HEIGHT/2-15, ap2, 7)
             if self.graph_len == -1:
@@ -161,11 +161,9 @@ class App:
             # pyxel.text(utils.WIDTH/2-40, utils.HEIGHT-10, f'TEMPO: {self.timer}', 7)
             pyxel.text(utils.WIDTH/2-50, utils.HEIGHT-10, f'TEMPO: {(self.timer//60):02d}:{(self.timer%60):02d} ', 7)
             
-            #color = 0
             for node in self.nodes:
                 for neighbours in utils.graph[node.key]:
                     pyxel.line(node.posx, node.posy, self.nodes[int(neighbours)].posx, self.nodes[int(neighbours)].posy, 8)
-                #color+=1
             for node in self.nodes:
                 node.draw()
 
@@ -173,8 +171,6 @@ class App:
 
             if self.done == 1:
                 txt = """PRESSIONE A TECLA "R" PARA JOGAR NOVAMENTE"""
-                txt = """PRESSIONE A TECLA "R" PARA JOGAR NOVAMENTE"""
-                # pyxel.rect(utils.x_fix(utils.WIDTH/2, txt), utils.HEIGHT/2-50, , )
 
                 if utils.mistakes == 0:
                     msg = "Parabens! voce concluiu a travessia sem errar!"

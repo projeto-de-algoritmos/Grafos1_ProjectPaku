@@ -17,7 +17,8 @@ class Button:
             return 1
 
     def draw(self):
-        pyxel.circ(self.posx, self.posy, 15, self.color)
+        pyxel.circ(self.posx, self.posy+4, 15, 3)
+        pyxel.circ(self.posx, self.posy, 15, 11)
         pyxel.text(utils.x_fix(self.posx, self.text), self.posy, self.text, 7)
 
         
