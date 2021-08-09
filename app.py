@@ -6,26 +6,22 @@ import math
 import pyxel
 import random
 
-utils.graph = utils.generate_graph(random.randrange(4, 6))
 # print(utils.graph)
 class App:
     def __init__(self):
         pyxel.init(utils.WIDTH, utils.HEIGHT, caption="My Traversal Coach")
         pyxel.mouse(True)
         self.travel = 'DFS'
-        self.btn_traveld = classes.Button('DFS', utils.WIDTH/2 -50, utils.HEIGHT/2+20, 3)
-        self.btn_travelb = classes.Button('BFS', utils.WIDTH/2 +50, utils.HEIGHT/2+20, 3)
+        self.graph_len = -1
+        self.btn_traveld = classes.Button('DFS', utils.WIDTH/2 -50, utils.HEIGHT/2+40, 3)
+        self.btn_travelb = classes.Button('BFS', utils.WIDTH/2 +50, utils.HEIGHT/2+40, 3)
 
         self.done = 0
         self.timer = 0
+        
         self.nodes = []
         self.tree = classes.Tree()
-        num_nodes = utils.graph.__len__()
-        for i in range(0, num_nodes):
-            x = pyxel.width/4+math.sin(math.radians((360/num_nodes)*i))*50
-            y = pyxel.height/2+math.cos(math.radians((360/num_nodes)*i))*40
-
-            self.nodes.append(classes.Node(str(i), x, y, 7))
+       
             
         pyxel.run(self.update, self.draw)
 
@@ -42,11 +38,48 @@ class App:
             
 
         if utils.state == 0:
+            if pyxel.btnp(pyxel.KEY_RIGHT):
+                if self.graph_len == -1:
+                    self.graph_len = 12
+                elif self.graph_len < 12:
+                    self.graph_len +=1
+                
+            if pyxel.btnp(pyxel.KEY_LEFT):
+                if self.graph_len == -1:
+                    self.graph_len = 4
+                elif self.graph_len > 4:
+                    self.graph_len -=1
+            if pyxel.btnp(pyxel.KEY_SPACE):
+                    self.graph_len = -1
             if self.btn_travelb.update() == 1:
+                if self.graph_len == -1:
+                    utils.graph = utils.generate_graph(random.randrange(4, 12))
+                else:
+                    utils.graph = utils.generate_graph(self.graph_len)
+                self.nodes = []
+                num_nodes = utils.graph.__len__()
+                for i in range(0, num_nodes):
+                    x = pyxel.width/4+math.sin(math.radians((360/num_nodes)*i))*50
+                    y = pyxel.height/2+math.cos(math.radians((360/num_nodes)*i))*40
+
+                    self.nodes.append(classes.Node(str(i), x, y, 7))
                 self.travel = "BFS"
+                self.done = 0
                 utils.state = 1
             if self.btn_traveld.update() == 1:
+                if self.graph_len == -1:
+                    utils.graph = utils.generate_graph(random.randrange(4, 12))
+                else:
+                    utils.graph = utils.generate_graph(self.graph_len)
+                self.nodes = []
+                num_nodes = utils.graph.__len__()
+                for i in range(0, num_nodes):
+                    x = pyxel.width/4+math.sin(math.radians((360/num_nodes)*i))*50
+                    y = pyxel.height/2+math.cos(math.radians((360/num_nodes)*i))*40
+
+                    self.nodes.append(classes.Node(str(i), x, y, 7))
                 self.travel = "DFS"
+                self.done = 0
                 utils.state = 1
         elif utils.state == 1:
 
@@ -55,17 +88,10 @@ class App:
                     utils.state = 0
                     utils.mistakes = 0
                     utils.visited = []
-                    utils.graph = utils.generate_graph(random.randrange(4, 6))
 
                     self.done = 0
                     self.timer = 0
-                    self.nodes = []
-                    num_nodes = utils.graph.__len__()
-                    for i in range(0, num_nodes):
-                        x = pyxel.width/4+math.sin(math.radians((360/num_nodes)*i))*50
-                        y = pyxel.height/2+math.cos(math.radians((360/num_nodes)*i))*40
-
-                        self.nodes.append(classes.Node(str(i), x, y, 7))
+                   
 
                     #BFS vars
                     travel.cn_iterator = 0 # cn = current node
@@ -111,15 +137,28 @@ class App:
         pyxel.cls(0)
 
         if utils.state == 0:           
-            pyxel.text(utils.x_fix(utils.WIDTH/2, "MY TRAVERSAL COACH"), utils.HEIGHT/2-50, "MY TRAVERSAL COACH", 7)
+            pyxel.text(utils.x_fix(utils.WIDTH/2, "MY TRAVERSAL COACH"), utils.HEIGHT/2-70, "MY TRAVERSAL COACH", 7)
+            ap = "PRESSIONE ESPACO PARA GERAR UM GRAFO ALEATORIO"
+            ap2 = "PRESIONE <- OU -> PARA ALTERAR A QUANTIDADE DE NOS"
+            pyxel.text(utils.x_fix(utils.WIDTH/2, ap), utils.HEIGHT/2-30, ap, 7)
+            pyxel.text(utils.x_fix(utils.WIDTH/2, ap2), utils.HEIGHT/2-15, ap2, 7)
+            if self.graph_len == -1:
+                ap3 = f"<- ? ->"
+            else:
+                ap3 = f"<- {self.graph_len} ->"
+            pyxel.text(utils.x_fix(utils.WIDTH/2, "<- XX ->"), utils.HEIGHT/2+10, ap3, 7)
 
             self.btn_traveld.draw()
             self.btn_travelb.draw()
 
         elif utils.state == 1:
-            pyxel.line(utils.WIDTH/2 , 0, utils.WIDTH/2, utils.HEIGHT, 5)
+            pyxel.line(utils.WIDTH/2 , 15, utils.WIDTH/2, utils.HEIGHT, 11)
             pyxel.text(3, 3, "GRAFO", 10)
-            pyxel.text(utils.WIDTH/2+5, 3, "ARVORE", 10)
+            if self.travel == "DFS":
+                pyxel.text(utils.x_fix(utils.WIDTH/2, "DEPTH-FIRST SEARCH"), 3, "DEPTH-FIRST SEARCH", 11)
+            else:
+                pyxel.text(utils.x_fix(utils.WIDTH/2, "BREADTH-FIRST SEARCH"), 3, "BREADTH-FIRST SEARCH", 11)
+            pyxel.text(utils.WIDTH - 30, 3, "ARVORE", 10)
             pyxel.text(3, utils.HEIGHT-10, f'ERROS: {utils.mistakes}', 7)
             pyxel.text(utils.WIDTH/2-40, utils.HEIGHT-10, f'TEMPO: {self.timer}', 7)
             

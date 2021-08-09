@@ -48,7 +48,7 @@ def user_bfs(node, graph):
             cn_layers.append(cn_layers[cn_iterator]+1)
             return 0 
         else:
-            utils.mistake += 1
+            utils.mistakes += 1
             return 1
 
 def user_dfs(node, graph):
@@ -87,7 +87,7 @@ def user_dfs(node, graph):
                 if flag == 2:
                     return 0
                 if flag == 1:
-                    utils.mistake += 1
+                    utils.mistakes += 1
                     stack_dfs = stack_bkp.copy()
                     if stack_dfs != []:
                         current_node = stack_dfs[-1]
