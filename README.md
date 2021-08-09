@@ -1,44 +1,51 @@
-**!! Atenção: Renomeie o seu repositório para (Tema)_(NomeDoProjeto). !!** 
+# My Traversal Coach
 
-Temas:
- - Grafos1
- - Grafos2
- - PD
- - D&C
- - Greed
- - Final 
- 
- **!! *Não coloque os nomes dos alunos no título do repositório*. Exemplo de título correto: Grafos2_Labirinto-do-Minotauro !!**
- 
- (Apague essa seção)
-
-# NomedoProjeto
-
-**Número da Lista**: X<br>
-**Conteúdo da Disciplina**: XXXXXXXXXX<br>
+**Número da Lista**: 1<br>
+**Conteúdo da Disciplina**: Grafos 1<br>
 
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 18/0113585 |  Hugo Ricardo Souza Bezerra |
+| 18/0125770  |  Lucas Gabriel Bezerra |
 
 ## Sobre 
-Descreva os objetivos do seu projeto e como ele funciona. 
-
+O My Traversal Coach busca ajudar alunos de Estrutura de Dados e Projeto de Algoritmos a entenderem e praticarem as travessias DFS e BFS. 
+A aplicação permite que o usuário escolha realizar uma das duas travessia em um grafo gerado aleatoriamente, enquanto gera feedback a cada nó escolhido pelo usuário construindo uma árvore de travessia.
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+![](https://i.imgur.com/1UxCA8S.gif)
+
+![](https://i.imgur.com/KBoWCk9.png)
+
+![](https://i.imgur.com/wo7qWlP.png)
+
+![](https://i.imgur.com/tPx1fBs.png)
 
 ## Instalação 
-**Linguagem**: xxxxxx<br>
-**Framework**: (caso exista)<br>
-Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
+**Linguagem**: Python<br>
+**Framework**: --- <br>
+
+**Pré-requisitos** para rodar o My Traversal Coach:
+* Instale o [Python](https://www.python.org/downloads/) (versão 3.8.5)
+* Instale o [Pyxel](https://github.com/kitao/pyxel/blob/master/README.pt.md) (versão 1.4.3)
+
+Instalar e Executar (Sistema baseado em Debian)
+
+    $ pip3 install pyxel 
+    $ git clone https://github.com/projeto-de-algoritmos/Grafos1_MyTraversalCoach.git
+    $ cd Grafos1_MyTraversalCoach
+    $ python3 app.py
+
 
 ## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
+Para usar o My Traversal Coach siga os seguintes passos:
+* Execute a aplicação como mostrado acima
+* Selecione uma das travessias(DFS e BFS) clicando no botão desejado
+* Clique em um nó para iniciar a travessia
+* Clique nos nós válidos para completar a travessia
+* Após completar a travessia uma mensagem será exibida
+* Pressione **r** para um nova travessia, ou **q** para fechar a aplicação 
 
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
 
 
 
