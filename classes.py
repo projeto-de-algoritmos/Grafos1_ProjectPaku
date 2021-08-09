@@ -3,6 +3,7 @@ import travel
 
 import pyxel
 import math
+
 class Button:
     def __init__(self, text, x, y, color):
         self.text = text

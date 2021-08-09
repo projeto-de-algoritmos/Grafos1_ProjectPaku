@@ -6,7 +6,6 @@ import math
 import pyxel
 import random
 
-# print(utils.graph)
 class App:
     def __init__(self):
         pyxel.init(utils.WIDTH, utils.HEIGHT, caption="My Traversal Coach")
@@ -83,7 +82,6 @@ class App:
                 utils.state = 1
         elif utils.state == 1:
 
-            # if self.done == 1:
             if pyxel.btnp(pyxel.KEY_R):
                 utils.state = 0
                 utils.mistakes = 0
@@ -158,7 +156,6 @@ class App:
                 pyxel.text(utils.x_fix(utils.WIDTH/2, "BREADTH-FIRST SEARCH"), 3, "BREADTH-FIRST SEARCH", 11)
             pyxel.text(utils.WIDTH - 30, 3, "ARVORE", 10)
             pyxel.text(3, utils.HEIGHT-10, f'ERROS: {utils.mistakes}', 7)
-            # pyxel.text(utils.WIDTH/2-40, utils.HEIGHT-10, f'TEMPO: {self.timer}', 7)
             pyxel.text(utils.WIDTH/2-50, utils.HEIGHT-10, f'TEMPO: {(self.timer//60):02d}:{(self.timer%60):02d} ', 7)
             
             for node in self.nodes:
@@ -192,5 +189,5 @@ class App:
                 pyxel.text(utils.x_fix(utils.WIDTH/2, txt)-1, utils.HEIGHT/2+70, txt, outline_col)
                 pyxel.text(utils.x_fix(utils.WIDTH/2, txt)+1, utils.HEIGHT/2+70, txt, outline_col)
                 pyxel.text(utils.x_fix(utils.WIDTH/2, txt), utils.HEIGHT/2+70, txt, 8)
-# importante  
+
 App()
