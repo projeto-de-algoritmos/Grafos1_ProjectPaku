@@ -21,6 +21,12 @@ A aplicação permite que o usuário escolha realizar uma das duas travessias em
 
 ![](https://i.imgur.com/tPx1fBs.png)
 
+## Vídeo
+
+[![Video](https://img.youtube.com/vi/q3zYnlWD8q0/0.jpg)](https://www.youtube.com/watch?v=q3zYnlWD8q0)
+
+> https://www.youtube.com/watch?v=q3zYnlWD8q0
+
 ## Instalação 
 **Linguagem**: Python<br>
 **Framework**: --- <br>
@@ -45,8 +51,3 @@ Para usar o My Traversal Coach siga os seguintes passos:
 * Clique nos nós válidos para completar a travessia
 * Após completar a travessia uma mensagem será exibida
 * Pressione **R** para um nova travessia, ou **Q** para fechar a aplicação 
-
-
-
-
-
