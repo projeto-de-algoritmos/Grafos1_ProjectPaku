@@ -11,7 +11,7 @@
 
 ## Sobre 
 O My Traversal Coach busca ajudar alunos de Estrutura de Dados e Projeto de Algoritmos a entenderem e praticarem as travessias DFS e BFS. 
-A aplicação permite que o usuário escolha realizar uma das duas travessia em um grafo gerado aleatoriamente, enquanto gera feedback a cada nó escolhido pelo usuário construindo uma árvore de travessia.
+A aplicação permite que o usuário escolha realizar uma das duas travessias em um grafo gerado aleatoriamente, enquanto gera feedback a cada nó escolhido pelo usuário construindo uma árvore de travessia.
 ## Screenshots
 ![](https://i.imgur.com/1UxCA8S.gif)
 
