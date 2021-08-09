@@ -40,11 +40,11 @@ Instalar e Executar (Sistema baseado em Debian)
 ## Uso 
 Para usar o My Traversal Coach siga os seguintes passos:
 * Execute a aplicação como mostrado acima
-* Selecione uma das travessias(DFS e BFS) clicando no botão desejado
+* Selecione uma das travessias (DFS ou BFS) clicando no botão desejado
 * Clique em um nó para iniciar a travessia
 * Clique nos nós válidos para completar a travessia
 * Após completar a travessia uma mensagem será exibida
-* Pressione **r** para um nova travessia, ou **q** para fechar a aplicação 
+* Pressione **R** para um nova travessia, ou **Q** para fechar a aplicação 
 
 
 
