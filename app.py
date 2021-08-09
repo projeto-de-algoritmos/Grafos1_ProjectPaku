@@ -30,7 +30,7 @@ class App:
             pyxel.quit()
 
         if(utils.visited.__len__() != utils.graph.__len__()) and self.done == 0:
-            if pyxel.frame_count % 24 == 0:
+            if pyxel.frame_count % 30 == 0:
                 self.timer += 1
         else:
             if self.done == 0:
@@ -109,7 +109,6 @@ class App:
 
             for node in self.nodes:
                 if node.update(self.travel) == 1:
-                    # TRATA APENAS A ARVORE BFS
                     if self.travel == 'BFS':
                         if travel.cn_layers.__len__() == 1 :
                             parent = None
@@ -122,7 +121,6 @@ class App:
                                     
                         self.tree.add_node(node.key, node_layer, parent)
                     elif self.travel == 'DFS':
-                        # TRATA APENAS A ARVORE DFS ↓
                         key = travel.stack_dfs[-1]
                         layer = travel.stack_dfs.__len__() - 1
                         if layer == 0:
@@ -160,7 +158,8 @@ class App:
                 pyxel.text(utils.x_fix(utils.WIDTH/2, "BREADTH-FIRST SEARCH"), 3, "BREADTH-FIRST SEARCH", 11)
             pyxel.text(utils.WIDTH - 30, 3, "ARVORE", 10)
             pyxel.text(3, utils.HEIGHT-10, f'ERROS: {utils.mistakes}', 7)
-            pyxel.text(utils.WIDTH/2-40, utils.HEIGHT-10, f'TEMPO: {self.timer}', 7)
+            # pyxel.text(utils.WIDTH/2-40, utils.HEIGHT-10, f'TEMPO: {self.timer}', 7)
+            pyxel.text(utils.WIDTH/2-50, utils.HEIGHT-10, f'TEMPO: {(self.timer//60):02d}:{(self.timer%60):02d} ', 7)
             
             #color = 0
             for node in self.nodes:
@@ -174,7 +173,18 @@ class App:
 
             if self.done == 1:
                 txt = """PRESSIONE A TECLA "R" PARA JOGAR NOVAMENTE"""
+                txt = """PRESSIONE A TECLA "R" PARA JOGAR NOVAMENTE"""
                 # pyxel.rect(utils.x_fix(utils.WIDTH/2, txt), utils.HEIGHT/2-50, , )
+
+                if utils.mistakes == 0:
+                    msg = "Parabens! voce concluiu a travessia sem errar!"
+                elif utils.mistakes < 5:
+                    msg = "Bem Jogado!"
+                else:
+                    msg = "Voce precisa treinar mais!"
+                
+                pyxel.rect(utils.WIDTH/2-1, utils.HEIGHT/2+58, 3, 21, 0)
+                pyxel.text(utils.x_fix(utils.WIDTH/2, msg), utils.HEIGHT/2+60, msg, 7)
 
                 outline_col = 7
                 pyxel.text(utils.x_fix(utils.WIDTH/2, txt)-1, utils.HEIGHT/2+70-1, txt, outline_col)
